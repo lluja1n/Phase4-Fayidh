@@ -193,3 +193,68 @@ a {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* Shared Cards */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* Shared Status Badges */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-available,
+.badge-accepted {
+    background: #e6f4ec;
+    color: #067647;
+}
+
+.badge-pending {
+    background: #fff6e0;
+    color: #93580a;
+}
+
+.badge-rejected,
+.badge-removed {
+    background: #fdecea;
+    color: #b42318;
+}
+
+.badge-unavailable {
+    background: #f0f3f8;
+    color: #5b6577;
+}
+
+.badge-sale {
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+
+.badge-donation {
+    background: var(--donation-soft);
+    color: var(--donation);
+}
+
+/* Responsive Cards */
+@media (max-width: 640px) {
+    .card {
+        padding: 16px;
+    }
+}
