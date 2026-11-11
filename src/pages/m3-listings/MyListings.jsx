@@ -1,5 +1,5 @@
-
 import { mockListings } from "../../data/mockListings.js";
+import { Link } from "react-router-dom";
 
 export default function MyListings() {
     // Temporary seller ID until login is implemented
@@ -14,7 +14,9 @@ export default function MyListings() {
         <section className="page">
             <h1>My Listings</h1>
             <p>Manage your surplus materials here.</p>
-
+            <Link to="/listings/new" className="btn btn-primary">
+                + Create Listing
+            </Link>
             {myListings.length === 0 ? (
                 <p>You have no listings yet.</p>
             ) : (
