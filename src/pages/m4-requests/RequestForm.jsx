@@ -14,7 +14,7 @@ import { requestEligibility,eligibilityMessage,  validateRequestForm, } from '..
 // this component will handle both purchase and donation requests :
 export default function RequestForm({ type }) {
     const { id } = useParams(); 
-    const { currentUser, users, getListing } = useApp(); // added current User and user to access the current user and shared application data.
+    const { currentUser, users, getListing, createRequest, toast  } = useApp(); // added current User and user to access the current user and shared application data.
     const listing = getListing(id); 
     const isDonation = type === 'donation';
    
@@ -28,6 +28,7 @@ export default function RequestForm({ type }) {
         });
     
     const [errors, setErrors] = useState({}); // store field vaildation errors I made it for later use
+    const [submitted, setSubmitted] = useState(null); // store the submission status of the form, I made it for later use
     // updating form fields when user types
     const handleChange = (event) => { 
     const { name, value } = event.target;
@@ -57,6 +58,25 @@ const handleValidate = () => {
 
   return !Object.values(validationErrors).some(Boolean);
 };
+// This function handles request submission after validating eligibility and form inputs
+    const handleSubmit = (event) => {
+    event.preventDefault();
+    if (submitted) {
+     return;
+    }
+    if (!handleValidate()) {
+    return;
+    }
+     const request = createRequest({
+    listingId: listing.id,
+    requesterId: currentUser.id,
+    type,
+    quantity: Number(form.quantity),
+    purpose: isDonation ? form.purpose.trim() : '',
+  });
+   setSubmitted(request);
+    toast('Your request has been submitted successfully.');
+};
 
       return (
     <div className="container page">
@@ -78,7 +98,7 @@ const handleValidate = () => {
 
       <form
       className="card card-medium stack"
-      onSubmit={(event) => event.preventDefault()}
+       onSubmit={handleSubmit}
     >
 
     <TextField
@@ -107,7 +127,7 @@ const handleValidate = () => {
        <button
         type="submit"
         className="btn btn-primary"
-        disabled={!allowed}
+        disabled={!allowed ||Boolean(submitted)}
       >
         Submit Request
       </button>
