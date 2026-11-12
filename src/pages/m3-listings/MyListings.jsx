@@ -1,3 +1,4 @@
+
 import { mockListings } from "../../data/mockListings.js";
 import { Link } from "react-router-dom";
 
@@ -12,32 +13,61 @@ export default function MyListings() {
 
     return (
         <section className="page">
-            <h1>My Listings</h1>
-            <p>Manage your surplus materials here.</p>
-            <Link to="/listings/new" className="btn btn-primary">
-                + Create Listing
-            </Link>
+            <div className="page-header">
+                <div>
+                    <h1>My Listings</h1>
+                    <p>Items your organization is selling or donating.</p>
+                </div>
+
+                <Link to="/listings/new" className="btn btn-primary">
+                    + Create Listing
+                </Link>
+            </div>
+
             {myListings.length === 0 ? (
                 <p>You have no listings yet.</p>
             ) : (
-                myListings.map((listing) => (
-                    <div className="card" key={listing.id}>
-                        <h2>{listing.name}</h2>
+                <div className="table-wrap">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Type / Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
 
-                        <p>Quantity: {listing.quantity}</p>
-                        <p>Location: {listing.location}</p>
+                        <tbody>
+                            {myListings.map((listing) => (
+                                <tr key={listing.id}>
+                                    <td>{listing.name}</td>
+                                    <td>{listing.categoryId}</td>
+                                    <td>{listing.quantity}</td>
 
-                        <p>
-                            {listing.type === "sale"
-                                ? `Price: ${listing.price} SAR`
-                                : "Donation"}
-                        </p>
+                                    <td>
+                                        <span className={`badge badge-${listing.type}`}>
+                                            {listing.type === "sale"
+                                                ? "For Sale"
+                                                : "For Donation"}
+                                        </span>
 
-                        <span className={`badge badge-${listing.status}`}>
-                            {listing.status}
-                        </span>
-                    </div>
-                ))
+                                        {listing.type === "sale" && (
+                                            <div>SAR {listing.price}</div>
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        <span className={`badge badge-${listing.status}`}>
+                                            {listing.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </section>
     );
