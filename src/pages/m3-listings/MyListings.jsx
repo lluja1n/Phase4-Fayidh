@@ -1,7 +1,7 @@
 
 import { mockListings } from "../../data/mockListings.js";
 import { Link } from "react-router-dom";
-
+import { mockCategories } from "../../data/mockCategories.js";
 export default function MyListings() {
     // Temporary seller ID until login is implemented
     const currentSellerId = "u-org-1";
@@ -43,9 +43,8 @@ export default function MyListings() {
                             {myListings.map((listing) => (
                                 <tr key={listing.id}>
                                     <td>{listing.name}</td>
-                                    <td>{listing.categoryId}</td>
+                                    <td>{getCategoryName(listing.categoryId)}</td>
                                     <td>{listing.quantity}</td>
-
                                     <td>
                                         <span className={`badge badge-${listing.type}`}>
                                             {listing.type === "sale"
@@ -71,4 +70,12 @@ export default function MyListings() {
             )}
         </section>
     );
+}
+
+function getCategoryName(categoryId) {
+    const category = mockCategories.find(
+        (category) => category.id === categoryId
+    );
+
+    return category ? category.name : "Unknown";
 }
