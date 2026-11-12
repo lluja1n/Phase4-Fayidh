@@ -19,9 +19,16 @@ import ForgotPassword from './pages/m1-auth/ForgotPassword.jsx';
 import Profile from './pages/m1-auth/Profile.jsx';
 import MyRequests from './pages/m1-auth/MyRequests.jsx';
 import OrganizationDashboard from './pages/m1-auth/OrganizationDashboard.jsx';
+// M5
+import AdminLogin from './pages/m5-admin/AdminLogin.jsx';
+import AdminDashboard from './pages/m5-admin/AdminDashboard.jsx';
+import UserManagement from './pages/m5-admin/UserManagement.jsx';
+import UserDetails from './pages/m5-admin/UserDetails.jsx';
+import CategoryManagement from './pages/m5-admin/CategoryManagement.jsx';
 
 const ORG = ['organization'];
 const BUYERS = ['organization', 'student'];
+const ADMIN = ['admin'];
 
 function NotFound({ forbidden = false }) {
   return (
@@ -56,6 +63,13 @@ export default function App() {
         <Route path="/profile" element={guard(BUYERS, <Profile />)} />
         <Route path="/my-requests" element={guard(BUYERS, <MyRequests />)} />
         <Route path="/dashboard" element={guard(ORG, <OrganizationDashboard />)} />
+
+        {/* M5 + M2 – admin (admin accounts are created by the Fayidh team only) */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={guard(ADMIN, <AdminDashboard />)} />
+        <Route path="/admin/users" element={guard(ADMIN, <UserManagement />)} />
+        <Route path="/admin/users/:id" element={guard(ADMIN, <UserDetails />)} />
+        <Route path="/admin/categories" element={guard(ADMIN, <CategoryManagement />)} />
 
         <Route path="/forbidden" element={<NotFound forbidden />} />
         <Route path="*" element={<NotFound />} />
