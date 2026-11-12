@@ -38,3 +38,46 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Seller Listing Form */
+.seller-listing-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.seller-listing-form .form-input,
+.seller-listing-form .form-select,
+.seller-listing-form .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+}
+
+.seller-listing-form .form-textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.seller-listing-form .form-error {
+    color: var(--danger);
+    font-size: 0.85rem;
+}
+
+
+/* Invalid form fields*/
+.seller-listing-form .input-error {
+    border: 1px solid var(--danger);
+    background-color: #fffafa;
+}
+
+.seller-listing-form .input-error:focus {
+    outline: 2px solid var(--danger);
+    outline-offset: 1px;
+}
