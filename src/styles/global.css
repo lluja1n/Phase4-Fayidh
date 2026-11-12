@@ -215,3 +215,79 @@ img { max-width: 100%; display: block; }
   font: inherit;
 }
 
+/* ---------------- Buttons ---------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--surface-2); }
+.btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+.btn-donation { background: var(--donation); border-color: var(--donation); color: #fff; }
+.btn-donation:hover { filter: brightness(0.92); background: var(--donation); }
+.btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-danger:hover { filter: brightness(0.92); background: var(--danger); }
+.btn-outline-danger { color: var(--danger); border-color: var(--danger); }
+.btn-outline-danger:hover { background: var(--danger-soft); }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--primary); }
+.btn-ghost:hover { background: var(--primary-soft); }
+.btn-sm { min-height: 34px; padding: 0 12px; font-size: 0.85rem; }
+.btn-block { width: 100%; }
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  background: #e4e8ee;
+  border-color: #e4e8ee;
+  color: #8a93a3;
+  cursor: not-allowed;
+  filter: none;
+}
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ---------------- Cards ---------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+.card-narrow { max-width: 480px; margin: 0 auto; }
+.card-medium { max-width: 760px; margin: 0 auto; }
+.card h2 { margin-bottom: 4px; }
+.card-subtitle { color: var(--muted); margin-bottom: 20px; }
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 8px 0 12px;
+}
+
+.stat-card .stat-label { color: var(--muted); font-size: 0.9rem; }
+.stat-card .stat-value { font-size: 2rem; font-weight: 700; line-height: 1.2; }
+.stat-card a { font-size: 0.875rem; font-weight: 600; }
+
