@@ -36,6 +36,7 @@ export default function MyListings() {
                                 <th>Quantity</th>
                                 <th>Type / Price</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
 
@@ -62,6 +63,16 @@ export default function MyListings() {
                                             {listing.status}
                                         </span>
                                     </td>
+
+                                    <td>
+                                        <Link
+                                            to={`/seller/listings/${listing.id}`}
+                                            className="btn"
+                                        >
+                                            View
+                                        </Link>
+                                    </td>
+
                                 </tr>
                             ))}
                         </tbody>

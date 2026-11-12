@@ -1,11 +1,10 @@
 import { mockListings } from "../../data/mockListings.js";
 import { mockCategories } from "../../data/mockCategories.js";
 import "./SellerListings.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function SellerListingDetails() {
-    // Temp listing id for test
-    const listingId = "l-2";
+   const { id: listingId } = useParams();
     // Find the selected listing
     const listing = mockListings.find(
         (item) => item.id === listingId
