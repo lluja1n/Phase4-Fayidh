@@ -3,16 +3,23 @@
 import { useParams } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
 
-//import the usestate to mange form input and vaildation state and the TextField and TextAreaField components to render the form inputs
+//import the usestate to mange form input and vaildation state 
 import { useState } from 'react';
-import { TextField, TextAreaField } from '../../components/ui.jsx';
+// I have added alert component to display feedback when the user is not eligible to submit a request.
+import { TextField, TextAreaField , Alert} from '../../components/ui.jsx';
+
+// importing the request eligibility and form validation rules 
+import { requestEligibility,eligibilityMessage,  validateRequestForm, } from '../../utils/rules.js';
 
 // this component will handle both purchase and donation requests :
 export default function RequestForm({ type }) {
     const { id } = useParams(); 
-    const { getListing } = useApp();
-    const listing = getListing(id);
+    const { currentUser, users, getListing } = useApp(); // added current User and user to access the current user and shared application data.
+    const listing = getListing(id); 
     const isDonation = type === 'donation';
+   
+    const { allowed, reason } = requestEligibility(  // To check if current user can request this listing.
+        currentUser, listing, users );
 
     //  here i stored the values enterd by the requester 
     const [form, setForm] = useState({
@@ -24,11 +31,32 @@ export default function RequestForm({ type }) {
     // updating form fields when user types
     const handleChange = (event) => { 
     const { name, value } = event.target;
-    setForm((previousForm) => ({
-         ...previousForm,
-         [name]: value,
-        }));
-    };
+    const updatedForm = {
+    ...form, [name]: value, };
+    setForm(updatedForm);
+    if (Object.values(errors).some(Boolean) && listing) {
+    const validationErrors = validateRequestForm(
+      { type, ...updatedForm },
+      listing
+    );
+     setErrors(validationErrors);
+  }
+};
+
+// This function checks if form is valid and updates the errors state
+const handleValidate = () => {
+  if (!listing || !allowed) {
+    return false;
+  }
+  const validationErrors = validateRequestForm(
+    { type, ...form },
+    listing
+  );
+
+  setErrors(validationErrors);
+
+  return !Object.values(validationErrors).some(Boolean);
+};
 
       return (
     <div className="container page">
@@ -39,10 +67,15 @@ export default function RequestForm({ type }) {
       <p>Listing ID: {id}</p>
 
       <p> Listing: {listing ? listing.name : 'Listing not found'}  </p>
+      {listing && !allowed && (
+         <Alert kind="warning">
+         {eligibilityMessage(reason, listing.type)}
+        </Alert>
+    )}
 
     {/* Implement form submission later.
     For now, prevent the default form submission. */}
-    
+
       <form
       className="card card-medium stack"
       onSubmit={(event) => event.preventDefault()}
@@ -74,7 +107,7 @@ export default function RequestForm({ type }) {
        <button
         type="submit"
         className="btn btn-primary"
-        disabled
+        disabled={!allowed}
       >
         Submit Request
       </button>
