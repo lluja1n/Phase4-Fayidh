@@ -19,6 +19,11 @@ import ForgotPassword from './pages/m1-auth/ForgotPassword.jsx';
 import Profile from './pages/m1-auth/Profile.jsx';
 import MyRequests from './pages/m1-auth/MyRequests.jsx';
 import OrganizationDashboard from './pages/m1-auth/OrganizationDashboard.jsx';
+// M3
+import MyListings from './pages/m3-listings/MyListings.jsx';
+import CreateListing from './pages/m3-listings/CreateListing.jsx';
+import EditListing from './pages/m3-listings/EditListing.jsx';
+import SellerListingDetails from './pages/m3-listings/SellerListingDetails.jsx';
 // M5
 import AdminLogin from './pages/m5-admin/AdminLogin.jsx';
 import AdminDashboard from './pages/m5-admin/AdminDashboard.jsx';
@@ -63,6 +68,12 @@ export default function App() {
         <Route path="/profile" element={guard(BUYERS, <Profile />)} />
         <Route path="/my-requests" element={guard(BUYERS, <MyRequests />)} />
         <Route path="/dashboard" element={guard(ORG, <OrganizationDashboard />)} />
+
+        {/* M3 – seller listings */}
+        <Route path="/seller/listings" element={guard(ORG, <MyListings />)} />
+        <Route path="/seller/listings/new" element={guard(ORG, <CreateListing />)} />
+        <Route path="/seller/listings/:id" element={guard(ORG, <SellerListingDetails />)} />
+        <Route path="/seller/listings/:id/edit" element={guard(ORG, <EditListing />)} />
 
         {/* M5 + M2 – admin (admin accounts are created by the Fayidh team only) */}
         <Route path="/admin/login" element={<AdminLogin />} />
