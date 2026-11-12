@@ -19,6 +19,12 @@ import ForgotPassword from './pages/m1-auth/ForgotPassword.jsx';
 import Profile from './pages/m1-auth/Profile.jsx';
 import MyRequests from './pages/m1-auth/MyRequests.jsx';
 import OrganizationDashboard from './pages/m1-auth/OrganizationDashboard.jsx';
+// M2
+import Home from './pages/m2-browse/Home.jsx';
+import BrowseListings from './pages/m2-browse/BrowseListings.jsx';
+import ListingDetails from './pages/m2-browse/ListingDetails.jsx';
+import AdminListings from './pages/m2-browse/AdminListings.jsx';
+import AdminListingDetails from './pages/m2-browse/AdminListingDetails.jsx';
 // M3
 import MyListings from './pages/m3-listings/MyListings.jsx';
 import CreateListing from './pages/m3-listings/CreateListing.jsx';
@@ -62,6 +68,11 @@ export default function App() {
   return (
     <AppLayout>
       <Routes>
+        {/* Public */}
+        <Route path="/" element={<Home />} />
+        <Route path="/browse" element={<BrowseListings />} />
+        <Route path="/listings/:id" element={<ListingDetails />} />
+
         {/* M1 – accounts */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
@@ -91,6 +102,8 @@ export default function App() {
         <Route path="/admin/users" element={guard(ADMIN, <UserManagement />)} />
         <Route path="/admin/users/:id" element={guard(ADMIN, <UserDetails />)} />
         <Route path="/admin/categories" element={guard(ADMIN, <CategoryManagement />)} />
+        <Route path="/admin/listings" element={guard(ADMIN, <AdminListings />)} />
+        <Route path="/admin/listings/:id" element={guard(ADMIN, <AdminListingDetails />)} />
 
         <Route path="/forbidden" element={<NotFound forbidden />} />
         <Route path="*" element={<NotFound />} />
