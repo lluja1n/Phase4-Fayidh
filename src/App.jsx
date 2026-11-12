@@ -24,6 +24,10 @@ import MyListings from './pages/m3-listings/MyListings.jsx';
 import CreateListing from './pages/m3-listings/CreateListing.jsx';
 import EditListing from './pages/m3-listings/EditListing.jsx';
 import SellerListingDetails from './pages/m3-listings/SellerListingDetails.jsx';
+// M4
+import RequestForm from './pages/m4-requests/RequestForm.jsx';
+import SellerRequests from './pages/m4-requests/SellerRequests.jsx';
+import SellerRequestDetails from './pages/m4-requests/SellerRequestDetails.jsx';
 // M5
 import AdminLogin from './pages/m5-admin/AdminLogin.jsx';
 import AdminDashboard from './pages/m5-admin/AdminDashboard.jsx';
@@ -68,6 +72,12 @@ export default function App() {
         <Route path="/profile" element={guard(BUYERS, <Profile />)} />
         <Route path="/my-requests" element={guard(BUYERS, <MyRequests />)} />
         <Route path="/dashboard" element={guard(ORG, <OrganizationDashboard />)} />
+
+        {/* M4 – requests */}
+        <Route path="/listings/:id/purchase" element={guard(BUYERS, <RequestForm type="purchase" />)} />
+        <Route path="/listings/:id/donate" element={guard(BUYERS, <RequestForm type="donation" />)} />
+        <Route path="/seller/requests" element={guard(ORG, <SellerRequests />)} />
+        <Route path="/seller/requests/:id" element={guard(ORG, <SellerRequestDetails />)} />
 
         {/* M3 – seller listings */}
         <Route path="/seller/listings" element={guard(ORG, <MyListings />)} />
