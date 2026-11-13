@@ -9,6 +9,7 @@ import ListingDetails from './pages/m2-browse/ListingDetails.jsx';
 //M5 - Admin
 import AdminLogin from './pages/m5-admin/AdminLogin.jsx';
 import AdminDashboard from './pages/m5-admin/AdminDashboard.jsx';
+import UserManagement from './pages/m5-admin/UserManagement.jsx';
 
 export default function App() {
   return (
@@ -24,6 +25,14 @@ export default function App() {
           element={
             <RequireRole roles={['admin']}>
               <AdminDashboard />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <RequireRole roles={['admin']}>
+              <UserManagement />
             </RequireRole>
           }
         />
