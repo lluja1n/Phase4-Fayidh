@@ -11,6 +11,7 @@ import AdminLogin from './pages/m5-admin/AdminLogin.jsx';
 import AdminDashboard from './pages/m5-admin/AdminDashboard.jsx';
 import UserManagement from './pages/m5-admin/UserManagement.jsx';
 import UserDetails from './pages/m5-admin/UserDetails.jsx';
+import CategoryManagement from './pages/m5-admin/CategoryManagement.jsx';
 
 export default function App() {
   return (
@@ -42,6 +43,14 @@ export default function App() {
           element={
             <RequireRole roles={['admin']}>
               <UserDetails />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/categories"
+          element={
+            <RequireRole roles={['admin']}>
+              <CategoryManagement />
             </RequireRole>
           }
         />
