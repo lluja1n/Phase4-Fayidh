@@ -11,8 +11,11 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
         categoryId: initialData.categoryId || "",
         quantity: initialData.quantity ?? "",
         condition: initialData.condition || "",
+
         location: initialData.location || "",
-        description: initialData.description || ""
+        description: initialData.description || "",
+        images: initialData.images || []
+
     });
     const [errors, setErrors] = useState({});
 
@@ -37,6 +40,82 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
                 : {})
         }));
     }
+
+
+    async function handleImageChange(event) {
+        const files = Array.from(event.target.files);
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (formData.images.length + files.length > 5) {
+            setErrors((prev) => ({
+                ...prev,
+                images: "You can upload up to 5 images."
+            }));
+            event.target.value = "";
+            return;
+        }
+
+        for (const file of files) {
+            if (!allowedTypes.includes(file.type)) {
+                setErrors((prev) => ({
+                    ...prev,
+                    images: "Unsupported image format. Please upload a valid image file."
+                }));
+                event.target.value = "";
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                setErrors((prev) => ({
+                    ...prev,
+                    images: "Image exceeds the maximum allowed file size."
+                }));
+                event.target.value = "";
+                return;
+            }
+        }
+
+        setErrors((prev) => ({
+            ...prev,
+            images: ""
+        }));
+
+
+        // Convert valid images to Data URLs
+        try {
+            const imageUrls = await Promise.all(
+                files.map((file) => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => reject(new Error("Image could not be read."));
+
+                        reader.readAsDataURL(file);
+                    });
+                })
+            );
+
+            setFormData((prev) => ({
+                ...prev,
+                images: [...prev.images, ...imageUrls]
+            }));
+        } catch {
+            setErrors((prev) => ({
+                ...prev,
+                images: "Unable to read images. Please try again."
+            }));
+        }
+
+        event.target.value = "";
+
+    }
+
 
     function validateForm() {
         const newErrors = {};
@@ -238,7 +317,51 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
                 />
             </div>
 
-            {Object.keys(errors).length > 0 && (
+            {/* Listing images */}
+            <div className="form-group">
+                <label htmlFor="images">Listing Images</label>
+
+                <p>JPG, PNG or WEBP - Max 2 MB each - Up to 5 images</p>
+
+                <input
+                    id="images"
+                    name="images"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    className="seller-file-input"
+                    onChange={handleImageChange}
+                />
+                {errors.images && (
+                    <span className="form-error">{errors.images}</span>
+                )}
+
+                {/* Image Previews */}
+                <div className="seller-image-previews">
+                    {formData.images.map((image, index) => (
+                        <div className="seller-image-preview" key={index}>
+                            <img src={image} alt={`Listing preview ${index + 1}`} />
+
+                            <button
+                                type="button"
+                                className="btn"
+                                onClick={() => {
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        images: prev.images.filter((_, i) => i !== index)
+                                    }));
+                                }}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+            </div>
+
+
+            {Object.values(errors).some((error) => error !== "") && (
                 <p className="form-error">
                     Please correct the highlighted fields before publishing.
                 </p>
