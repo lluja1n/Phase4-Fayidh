@@ -163,3 +163,21 @@
 .seller-remove-btn:hover:not(:disabled) {
     background: #fdecea;
 }
+
+/* Seller listings empty state */
+.seller-empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+.seller-empty-state h2 {
+    margin-bottom: 12px;
+}
+
+.seller-empty-state p {
+    color: var(--muted);
+    margin-bottom: 20px;
+}

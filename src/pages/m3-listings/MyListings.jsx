@@ -1,14 +1,23 @@
 
 import { useApp } from "../../context/AppContext.jsx";
 import { Link } from "react-router-dom";
-import { mockCategories } from "../../data/mockCategories.js";
+
 export default function MyListings() {
 
-    const { listings, currentUser, removeListing, toast } = useApp();
+    const { listings, categories, currentUser, removeListing, toast } = useApp();
 
     const myListings = listings.filter(
         (listing) => listing.ownerId === currentUser?.id
     );
+
+    function getCategoryName(categoryId) {
+        const category = categories.find(
+            (item) => item.id === categoryId
+        );
+
+        return category ? category.name : "Unknown";
+    }
+
 
     function handleRemove(listingId) {
         const listing = myListings.find(
@@ -32,6 +41,34 @@ export default function MyListings() {
     }
 
 
+    if (!currentUser) {
+        return (
+            <section className="page">
+                <h1>Login Required</h1>
+                <p>Please log in to manage your listings.</p>
+                <Link to="/login" className="btn btn-primary">
+                    Log In
+                </Link>
+            </section>
+        );
+    }
+
+    if (
+        currentUser.role !== "organization" ||
+        currentUser.status !== "active"
+    ) {
+        return (
+            <section className="page">
+                <h1>Access Denied</h1>
+                <p>
+                    Only active organization accounts can manage listings.
+                </p>
+            </section>
+        );
+    }
+
+
+
 
     return (
         <section className="page">
@@ -46,9 +83,21 @@ export default function MyListings() {
                 </Link>
             </div>
 
+
             {myListings.length === 0 ? (
-                <p>You have no listings yet.</p>
+                <div className="seller-empty-state">
+                    <h2>No Listings Yet</h2>
+                    <p>
+                        You haven't created any listings yet.
+                        Start by adding your first surplus material.
+                    </p>
+
+                    <Link to="/listings/new" className="btn btn-primary">
+                        + Create Your First Listing
+                    </Link>
+                </div>
             ) : (
+
                 <div className="table-wrap">
                     <table className="table">
                         <thead>
@@ -96,12 +145,24 @@ export default function MyListings() {
                                                 View
                                             </Link>
 
-                                            <Link
-                                                to={`/listings/${listing.id}/edit`}
-                                                className="btn"
-                                            >
-                                                Edit
-                                            </Link>
+
+                                            {listing.status !== "removed" ? (
+                                                <Link
+                                                    to={`/listings/${listing.id}/edit`}
+                                                    className="btn"
+                                                >
+                                                    Edit
+                                                </Link>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    className="btn"
+                                                    disabled
+                                                >
+                                                    Edit
+                                                </button>
+                                            )}
+
 
                                             <button
                                                 type="button"
@@ -126,10 +187,3 @@ export default function MyListings() {
     );
 }
 
-function getCategoryName(categoryId) {
-    const category = mockCategories.find(
-        (category) => category.id === categoryId
-    );
-
-    return category ? category.name : "Unknown";
-}
