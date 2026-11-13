@@ -157,15 +157,38 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
     }
 
 
-    function handleSubmit(event) {
-        event.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+    
+function handleSubmit(event) {
+    event.preventDefault();
 
-        console.log(formData);
+    console.log("Save button clicked");
+
+    if (!validateForm()) {
+        console.log("Validation failed");
+        return;
     }
+
+    console.log("Validation passed");
+
+    const listingData = {
+        ...formData,
+        quantity: Number(formData.quantity),
+        price: formData.type === "sale"
+            ? Number(formData.price)
+            : null
+    };
+
+    console.log("Listing data:", listingData);
+
+    if (onSubmit) {
+        onSubmit(listingData);
+    } else {
+        console.log("onSubmit is missing");
+    }
+}
+
+
 
     return (
         <form onSubmit={handleSubmit} noValidate className="card seller-listing-form">

@@ -1,14 +1,19 @@
-import { mockListings } from "../../data/mockListings.js";
+import { useApp } from "../../context/AppContext.jsx";
 import { mockCategories } from "../../data/mockCategories.js";
 import "./SellerListings.css";
 import { Link, useParams } from "react-router-dom";
 
 export default function SellerListingDetails() {
-   const { id: listingId } = useParams();
-    // Find the selected listing
-    const listing = mockListings.find(
-        (item) => item.id === listingId
+
+    const { id: listingId } = useParams();
+    const { listings, currentUser } = useApp();
+
+    const listing = listings.find(
+        (item) =>
+            item.id === listingId &&
+            item.ownerId === currentUser?.id
     );
+
     // Show a mesage if the listing not exist
     if (!listing) {
         return (

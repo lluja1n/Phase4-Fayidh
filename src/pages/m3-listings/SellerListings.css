@@ -143,3 +143,23 @@
     outline: 2px solid var(--primary);
     outline-offset: 3px;
 }
+
+
+/* Seller listing aactions */
+.seller-listing-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Remove listing botton */
+.seller-remove-btn {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: var(--surface);
+}
+
+.seller-remove-btn:hover:not(:disabled) {
+    background: #fdecea;
+}

@@ -1,15 +1,37 @@
 
-import { mockListings } from "../../data/mockListings.js";
+import { useApp } from "../../context/AppContext.jsx";
 import { Link } from "react-router-dom";
 import { mockCategories } from "../../data/mockCategories.js";
 export default function MyListings() {
-    // Temporary seller ID until login is implemented
-    const currentSellerId = "u-org-1";
 
-    // Get listings belonging to this seller
-    const myListings = mockListings.filter(
-        (listing) => listing.ownerId === currentSellerId
+    const { listings, currentUser, removeListing, toast } = useApp();
+
+    const myListings = listings.filter(
+        (listing) => listing.ownerId === currentUser?.id
     );
+
+    function handleRemove(listingId) {
+        const listing = myListings.find(
+            (item) => item.id === listingId
+        );
+
+        if (!listing || listing.status === "removed") {
+            return;
+        }
+
+        const confirmed = window.confirm(
+            `Are you sure you want to remove "${listing.name}"?`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        removeListing(listingId);
+        toast("Listing removed successfully.");
+    }
+
+
 
     return (
         <section className="page">
@@ -64,14 +86,35 @@ export default function MyListings() {
                                         </span>
                                     </td>
 
+
                                     <td>
-                                        <Link
-                                            to={`/seller/listings/${listing.id}`}
-                                            className="btn"
-                                        >
-                                            View
-                                        </Link>
+                                        <div className="seller-listing-actions">
+                                            <Link
+                                                to={`/seller/listings/${listing.id}`}
+                                                className="btn"
+                                            >
+                                                View
+                                            </Link>
+
+                                            <Link
+                                                to={`/listings/${listing.id}/edit`}
+                                                className="btn"
+                                            >
+                                                Edit
+                                            </Link>
+
+                                            <button
+                                                type="button"
+                                                className="btn seller-remove-btn"
+                                                onClick={() => handleRemove(listing.id)}
+                                                disabled={listing.status === "removed"}
+                                            >
+                                                Remove
+                                            </button>
+
+                                        </div>
                                     </td>
+
 
                                 </tr>
                             ))}
