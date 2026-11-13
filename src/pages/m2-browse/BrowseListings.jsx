@@ -70,7 +70,7 @@ export default function BrowseListings() {
       </p>
 
       {available.length === 0 ? (
-        <EmptyState title="No listings available" message="Check back soon – organizations add new items regularly." />
+        <EmptyState title="No listings available" message="Check back soon." />
       ) : results.length === 0 ? (
         <EmptyState
           icon="?"
