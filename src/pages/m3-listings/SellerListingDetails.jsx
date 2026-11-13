@@ -1,18 +1,21 @@
 import { useApp } from "../../context/AppContext.jsx";
-import { mockCategories } from "../../data/mockCategories.js";
 import "./SellerListings.css";
 import { Link, useParams } from "react-router-dom";
 
 export default function SellerListingDetails() {
 
     const { id: listingId } = useParams();
-    const { listings, currentUser } = useApp();
+    const { listings, categories, currentUser } = useApp();
+
 
     const listing = listings.find(
         (item) =>
+            currentUser?.role === "organization" &&
+            currentUser?.status === "active" &&
             item.id === listingId &&
-            item.ownerId === currentUser?.id
+            item.ownerId === currentUser.id
     );
+
 
     // Show a mesage if the listing not exist
     if (!listing) {
@@ -24,7 +27,7 @@ export default function SellerListingDetails() {
     }
 
     // Find the category name
-    const category = mockCategories.find(
+    const category = categories.find(
         (item) => item.id === listing.categoryId
     );
 

@@ -181,3 +181,15 @@
     color: var(--muted);
     margin-bottom: 20px;
 }
+
+/* Responsive sellerr listings tabel */
+page .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.page .table-wrap .table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+}

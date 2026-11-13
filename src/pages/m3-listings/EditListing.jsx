@@ -9,12 +9,16 @@ export default function EditListing() {
 
     const { listings, currentUser, updateListing, toast } = useApp();
 
+
     const listing = listings.find(
         (item) =>
+            currentUser?.role === "organization" &&
+            currentUser?.status === "active" &&
             item.id === id &&
-            item.ownerId === currentUser?.id &&
+            item.ownerId === currentUser.id &&
             item.status !== "removed"
     );
+
 
     function handleEdit(data) {
         if (!listing) {

@@ -23,6 +23,35 @@ export default function CreateListing() {
         navigate("/my-listings");
     }
 
+    if (!currentUser) {
+        return (
+            <section className="page">
+                <h1>Login Required</h1>
+                <p>Please log in to create a listing.</p>
+                <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => navigate("/login")}
+                >
+                    Log In
+                </button>
+            </section>
+        );
+    }
+
+    if (
+        currentUser.role !== "organization" ||
+        currentUser.status !== "active"
+    ) {
+        return (
+            <section className="page">
+                <h1>Access Denied</h1>
+                <p>Only active organizations can create listings.</p>
+            </section>
+        );
+    }
+
+
     return (
         <section className="page">
             <h1>Create Listing</h1>

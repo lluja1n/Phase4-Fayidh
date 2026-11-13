@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CONDITIONS } from "../../data/mockListings.js";
-import { mockCategories } from "../../data/mockCategories.js";
+import { useApp } from "../../context/AppContext.jsx";
 import "./SellerListings.css";
 export default function ListingForm({
     initialData = {},
@@ -8,6 +8,8 @@ export default function ListingForm({
     onCancel,
     submitLabel = "Publish Listing"
 }) {
+    const { categories } = useApp();
+
     const [formData, setFormData] = useState({
 
         type: initialData.type || "",
@@ -56,10 +58,12 @@ export default function ListingForm({
         ];
 
         if (formData.images.length + files.length > 5) {
-            setErrors((prev) => ({
+
+            setFormData((prev) => ({
                 ...prev,
-                images: "You can upload up to 5 images."
+                images: [...prev.images, ...imageUrls].slice(0, 5)
             }));
+
             event.target.value = "";
             return;
         }
@@ -142,10 +146,15 @@ export default function ListingForm({
             newErrors.categoryId = "Please select a category.";
         }
 
-        if (!Number.isInteger(Number(formData.quantity)) ||
-            Number(formData.quantity) <= 0) {
-            newErrors.quantity = "Quantity must be a positive number.";
+
+        if (
+            formData.quantity === "" ||
+            !Number.isInteger(Number(formData.quantity)) ||
+            Number(formData.quantity) <= 0
+        ) {
+            newErrors.quantity = "Quantity must be a positive whole number.";
         }
+
 
         if (!formData.condition) {
             newErrors.condition = "Please select a condition.";
@@ -159,8 +168,6 @@ export default function ListingForm({
 
         return Object.keys(newErrors).length === 0;
     }
-
-
 
 
 
@@ -183,8 +190,6 @@ export default function ListingForm({
             onSubmit(listingData);
         }
     }
-
-
 
 
     return (
@@ -260,7 +265,7 @@ export default function ListingForm({
                     required
                 >
                     <option value="">Select category</option>
-                    {mockCategories.map((category) => (
+                    {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                             {category.name}
                         </option>
