@@ -1,12 +1,12 @@
 // I start importing the useParams to get ID listing from URL
 // , import also the useApp to get access data from shaerd app
-import { useParams } from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
 
 //import the usestate to mange form input and vaildation state 
 import { useState } from 'react';
 // I have added alert component to display feedback when the user is not eligible to submit a request.
-import { TextField, TextAreaField , Alert} from '../../components/ui.jsx';
+import { TextField, TextAreaField , Alert, EmptyState} from '../../components/ui.jsx';
 
 // importing the request eligibility and form validation rules 
 import { requestEligibility,eligibilityMessage,  validateRequestForm, } from '../../utils/rules.js';
@@ -77,7 +77,32 @@ const handleValidate = () => {
    setSubmitted(request);
     toast('Your request has been submitted successfully.');
 };
-
+if (!listing) {
+  return (
+    <div className="container page">
+      <EmptyState
+        title="Listing Not Found"
+        message="The requested listing could not be found."
+        action={<Link to="/browse" className="btn btn-primary">Browse Listings</Link>}
+      />
+    </div>
+  );
+}
+if (submitted) {
+  return (
+    <div className="container page">
+      <EmptyState
+        title="Request Submitted"
+        message="Your request has been submitted successfully and is pending review."
+        action={
+          <Link to="/my-requests" className="btn btn-primary">
+            View My Requests
+          </Link>
+        }
+      />
+    </div>
+  );
+}
       return (
     <div className="container page">
       <h1>
@@ -93,8 +118,7 @@ const handleValidate = () => {
         </Alert>
     )}
 
-    {/* Implement form submission later.
-    For now, prevent the default form submission. */}
+{/* Submit the request after validating eligibility and form inputs. */}
 
       <form
       className="card card-medium stack"
