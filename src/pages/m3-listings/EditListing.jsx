@@ -40,10 +40,14 @@ export default function EditListing() {
             <h1>Edit Listing</h1>
             <p>Update your surplus material information.</p>
 
+
             <ListingForm
                 initialData={listing}
                 onSubmit={handleEdit}
+                onCancel={() => navigate("/my-listings")}
+                submitLabel="Save Changes"
             />
+
         </section>
     );
 }

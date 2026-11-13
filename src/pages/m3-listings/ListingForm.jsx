@@ -2,7 +2,12 @@ import { useState } from "react";
 import { CONDITIONS } from "../../data/mockListings.js";
 import { mockCategories } from "../../data/mockCategories.js";
 import "./SellerListings.css";
-export default function ListingForm({ initialData = {}, onSubmit }) {
+export default function ListingForm({
+    initialData = {},
+    onSubmit,
+    onCancel,
+    submitLabel = "Publish Listing"
+}) {
     const [formData, setFormData] = useState({
 
         type: initialData.type || "",
@@ -11,7 +16,6 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
         categoryId: initialData.categoryId || "",
         quantity: initialData.quantity ?? "",
         condition: initialData.condition || "",
-
         location: initialData.location || "",
         description: initialData.description || "",
         images: initialData.images || []
@@ -158,35 +162,28 @@ export default function ListingForm({ initialData = {}, onSubmit }) {
 
 
 
-    
-function handleSubmit(event) {
-    event.preventDefault();
 
-    console.log("Save button clicked");
 
-    if (!validateForm()) {
-        console.log("Validation failed");
-        return;
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const listingData = {
+            ...formData,
+            quantity: Number(formData.quantity),
+            price: formData.type === "sale"
+                ? Number(formData.price)
+                : null
+        };
+
+        if (onSubmit) {
+            onSubmit(listingData);
+        }
     }
 
-    console.log("Validation passed");
-
-    const listingData = {
-        ...formData,
-        quantity: Number(formData.quantity),
-        price: formData.type === "sale"
-            ? Number(formData.price)
-            : null
-    };
-
-    console.log("Listing data:", listingData);
-
-    if (onSubmit) {
-        onSubmit(listingData);
-    } else {
-        console.log("onSubmit is missing");
-    }
-}
 
 
 
@@ -390,9 +387,21 @@ function handleSubmit(event) {
                 </p>
             )}
 
-            <button type="submit" className="btn btn-primary">
-                Save Listing
-            </button>
+
+            <div className="seller-listing-actions">
+                <button
+                    type="button"
+                    className="btn"
+                    onClick={onCancel}
+                >
+                    Cancel
+                </button>
+
+                <button type="submit" className="btn btn-primary">
+                    {submitLabel}
+                </button>
+            </div>
+
         </form>
     );
 }

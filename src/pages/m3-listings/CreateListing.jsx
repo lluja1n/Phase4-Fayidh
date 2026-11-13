@@ -28,7 +28,13 @@ export default function CreateListing() {
             <h1>Create Listing</h1>
             <p>Describe your surplus material.</p>
 
-            <ListingForm onSubmit={handleCreate} />
+
+            <ListingForm
+                onSubmit={handleCreate}
+                onCancel={() => navigate("/my-listings")}
+                submitLabel="Publish Listing"
+            />
+
         </section>
     );
 }
