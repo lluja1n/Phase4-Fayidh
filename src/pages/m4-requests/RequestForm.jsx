@@ -35,6 +35,12 @@ export default function RequestForm({ type }) {
     ? users.find((user) => user.id === listing.ownerId)
     : null;
   const isDonation = type === "donation";
+  const expectedType =
+    listing?.type === "sale"
+      ? "purchase"
+      : listing?.type === "donation"
+        ? "donation"
+        : null;
 
   const { allowed, reason } = requestEligibility(
     // To check if current user can request this listing.
@@ -74,6 +80,13 @@ export default function RequestForm({ type }) {
   // This function checks if form is valid and updates the errors state
   const handleValidate = () => {
     if (!listing || !allowed) {
+      return false;
+    }
+    // Prevent submitting a request with the wrong type
+    if (type !== expectedType) {
+      setErrors({
+        type: "This request type does not match the listing type.",
+      });
       return false;
     }
     const validationErrors = validateRequestForm({ type, ...form }, listing);
@@ -158,6 +171,8 @@ export default function RequestForm({ type }) {
       {listing && !allowed && (
         <Alert kind="warning">{eligibilityMessage(reason, listing.type)}</Alert>
       )}
+      {/* Display an error when request type does not match listing type */}
+      {errors.type && <Alert kind="warning">{errors.type}</Alert>}
       {/* Submit the request after validating eligibility and form inputs. */}
       <form className="card card-medium stack" onSubmit={handleSubmit}>
         <TextField
