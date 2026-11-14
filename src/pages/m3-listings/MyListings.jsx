@@ -1,4 +1,4 @@
-
+import "./SellerListings.css";
 import { useApp } from "../../context/AppContext.jsx";
 import { Link } from "react-router-dom";
 
@@ -58,7 +58,7 @@ export default function MyListings() {
         currentUser.status !== "active"
     ) {
         return (
-            <section className="page">
+            <section className="container page seller-my-listings">
                 <h1>Access Denied</h1>
                 <p>
                     Only active organization accounts can manage listings.
@@ -71,7 +71,7 @@ export default function MyListings() {
 
 
     return (
-        <section className="page">
+        <section className="container page seller-my-listings">
             <div className="page-header">
                 <div>
                     <h1>My Listings</h1>
