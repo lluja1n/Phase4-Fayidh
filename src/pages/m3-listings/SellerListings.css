@@ -1,0 +1,195 @@
+/* Seller llisting details */
+.listing-photo {
+    width: 100%;
+    height: 240px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+.listing-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* Seller listing details */
+.seller-details-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.seller-details-info p {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+    .seller-details-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Seller Listing Form */
+.seller-listing-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.seller-listing-form .form-input,
+.seller-listing-form .form-select,
+.seller-listing-form .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+}
+
+.seller-listing-form .form-textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.seller-listing-form .form-error {
+    color: var(--danger);
+    font-size: 0.85rem;
+}
+
+
+/* Invalid form fields*/
+.seller-listing-form .input-error {
+    border: 1px solid var(--danger);
+    background-color: #fffafa;
+}
+
+.seller-listing-form .input-error:focus {
+    outline: 2px solid var(--danger);
+    outline-offset: 1px;
+}
+
+
+/* Image upload previews */
+.seller-image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.seller-image-preview {
+    width: 140px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.seller-image-preview img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.seller-image-preview button {
+    width: 100%;
+    margin-top: 8px;
+}
+
+
+/* Custom image upload button */
+.seller-listing-form .seller-file-input {
+    width: 100%;
+    max-width: 100%;
+    color: transparent;
+    font-size: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.seller-listing-form .seller-file-input::file-selector-button {
+    background: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.seller-listing-form .seller-file-input:hover::file-selector-button {
+    background: var(--primary-dark);
+}
+
+.seller-listing-form .seller-file-input:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+
+/* Seller listing aactions */
+.seller-listing-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Remove listing botton */
+.seller-remove-btn {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: var(--surface);
+}
+
+.seller-remove-btn:hover:not(:disabled) {
+    background: #fdecea;
+}
+
+/* Seller listings empty state */
+.seller-empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+.seller-empty-state h2 {
+    margin-bottom: 12px;
+}
+
+.seller-empty-state p {
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+/* Responsive sellerr listings tabel */
+page .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.page .table-wrap .table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+}
