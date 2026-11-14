@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
 import { CONDITIONS } from '../../data/mockListings.js';
 import { ListingCard } from '../../components/ListingCard.jsx';
-import { EmptyState, PageHeader, SelectField, TextField } from '../../components/ui.jsx';
+import { EmptyState, PageHeader, SelectField, TextField, ErrorState } from '../../components/ui.jsx';
 import { isPubliclyVisible } from '../../utils/rules.js';
 
 const KEYS = ['q', 'category', 'type', 'condition', 'location'];
@@ -11,6 +11,10 @@ const KEYS = ['q', 'category', 'type', 'condition', 'location'];
 export default function BrowseListings() {
   const { listings, users, categories, getCategory, getUser, currentUser } = useApp();
   const [params, setParams] = useSearchParams();
+  const [loadError, setLoadError] = useState(
+    () => params.get('simulateError') === '1'
+  );
+
   const f = Object.fromEntries(KEYS.map((k) => [k, params.get(k) || '']));
 
   const available = useMemo(() => listings.filter((l) => isPubliclyVisible(l, users)), [listings, users]);
@@ -65,29 +69,38 @@ export default function BrowseListings() {
         </button>
       </form>
 
-      <p className="muted small" aria-live="polite">
-        Showing {results.length} {results.length === 1 ? 'listing' : 'listings'}
-      </p>
-
-      {available.length === 0 ? (
-        <EmptyState title="No listings available" message="Check back soon." />
-      ) : results.length === 0 ? (
-        <EmptyState
-          icon="?"
-          title="No listings match your search."
-          message="Try a different keyword or clear the filters."
-          action={
-            <button type="button" className="btn btn-primary" onClick={() => setParams({}, { replace: true })}>
-              Clear Filters
-            </button>
-          }
+      {loadError ? (
+        <ErrorState
+          message="Unable to load listings. Please try again."
+          onRetry={() => setLoadError(false)}
         />
       ) : (
-        <div className="listing-grid">
-          {results.map((l) => (
-            <ListingCard key={l.id} listing={l} category={getCategory(l.categoryId)} owner={getUser(l.ownerId)} to={`/listings/${l.id}`} />
-          ))}
-        </div>
+        <>
+          <p className="muted small" aria-live="polite">
+            Showing {results.length} {results.length === 1 ? 'listing' : 'listings'}
+          </p>
+
+          {available.length === 0 ? (
+            <EmptyState title="No listings available" message="Check back soon." />
+          ) : results.length === 0 ? (
+            <EmptyState
+              icon="?"
+              title="No listings match your search."
+              message="Try a different keyword or clear the filters."
+              action={
+                <button type="button" className="btn btn-primary" onClick={() => setParams({}, { replace: true })}>
+                  Clear Filters
+                </button>
+              }
+            />
+          ) : (
+            <div className="listing-grid">
+              {results.map((l) => (
+                <ListingCard key={l.id} listing={l} category={getCategory(l.categoryId)} owner={getUser(l.ownerId)} to={`/listings/${l.id}`} />
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Align dropdown arrows */}
