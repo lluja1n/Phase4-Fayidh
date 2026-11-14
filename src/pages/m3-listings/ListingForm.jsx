@@ -59,9 +59,9 @@ export default function ListingForm({
 
         if (formData.images.length + files.length > 5) {
 
-            setFormData((prev) => ({
+            setErrors((prev) => ({
                 ...prev,
-                images: [...prev.images, ...imageUrls].slice(0, 5)
+                images: "You can upload up to 5 images."
             }));
 
             event.target.value = "";
