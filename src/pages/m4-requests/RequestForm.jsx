@@ -35,7 +35,15 @@ export default function RequestForm({ type }) {
     ? users.find((user) => user.id === listing.ownerId)
     : null;
   const isDonation = type === "donation";
+  const expectedType =
+    listing?.type === "sale"
+      ? "purchase"
+      : listing?.type === "donation"
+        ? "donation"
+        : null;
 
+  // Check if the requested type matches the listing type
+  const typeMismatch = Boolean(listing && type !== expectedType);
   const { allowed, reason } = requestEligibility(
     // To check if current user can request this listing.
     currentUser,
@@ -74,6 +82,9 @@ export default function RequestForm({ type }) {
   // This function checks if form is valid and updates the errors state
   const handleValidate = () => {
     if (!listing || !allowed) {
+      return false;
+    }
+    if (typeMismatch) {
       return false;
     }
     const validationErrors = validateRequestForm({ type, ...form }, listing);
@@ -158,8 +169,18 @@ export default function RequestForm({ type }) {
       {listing && !allowed && (
         <Alert kind="warning">{eligibilityMessage(reason, listing.type)}</Alert>
       )}
+      {/* Show a warning when request type does not match listing type */}
+      {typeMismatch && (
+        <Alert kind="warning">
+          This request type does not match the listing type.
+        </Alert>
+      )}
       {/* Submit the request after validating eligibility and form inputs. */}
-      <form className="card card-medium stack" onSubmit={handleSubmit}>
+      <form
+        className="card card-medium stack"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         <TextField
           label="Quantity"
           name="quantity"
@@ -187,13 +208,15 @@ export default function RequestForm({ type }) {
             value={form.purpose}
             onChange={handleChange}
             error={errors.purpose}
+            minLength={10}
+            maxLength={500}
             required
           />
         )}
         <button
           type="submit"
           className="btn btn-primary"
-          disabled={!allowed || Boolean(submitted)}
+          disabled={!allowed || typeMismatch || Boolean(submitted)}
         >
           Submit Request
         </button>

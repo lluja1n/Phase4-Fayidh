@@ -57,18 +57,22 @@ export default function SellerRequestDetails() {
         : "Business";
 
   const handleAccept = () => {
-    setShowAcceptModal(false);
     if (request.status !== "pending") {
       toast("This request is no longer pending.", "error");
+      setShowAcceptModal(false);
       return;
     }
+
     const result = acceptRequest(request.id);
+
     if (result.ok) {
       toast("Request accepted successfully.");
+      setShowAcceptModal(false);
     } else {
       toast(result.error, "error");
     }
   };
+
   const handleReject = () => {
     if (request.status !== "pending") {
       toast("This request is no longer pending.", "error");
@@ -80,11 +84,11 @@ export default function SellerRequestDetails() {
 
     if (result.ok) {
       toast("Request rejected successfully.");
+      setRejectReason("");
+      setShowRejectModal(false);
     } else {
       toast(result.error, "error");
     }
-
-    setShowRejectModal(false);
   };
 
   return (
@@ -156,6 +160,22 @@ export default function SellerRequestDetails() {
               ["City", buyer?.city],
             ]}
           />
+          {/*To show buyer contact information when the request is accepted */}
+          {request.status === "accepted" && buyer && (
+            <>
+              <h3 className="section-title" style={{ marginTop: 20 }}>
+                Buyer Contact Information
+              </h3>
+
+              <InfoList
+                rows={[
+                  ["Contact Person", buyer.contactName || buyer.name],
+                  ["Email", buyer.email],
+                  ["Phone", buyer.phone],
+                ]}
+              />
+            </>
+          )}
         </div>
       </div>
       {/* Display the donation purpose only for donation requests. */}
