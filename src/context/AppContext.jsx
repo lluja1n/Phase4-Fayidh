@@ -16,7 +16,7 @@ import {
   checkLogin,
 } from "../data/mockAuth.js";
 import { createId, today } from "../data/mockHelpers.js";
-import { applyAcceptance ,requestEligibility , validateRequestForm} from "../utils/rules.js";
+import { applyAcceptance } from "../utils/rules.js";
 
 const STORAGE_KEY = "fayidh-demo-state-v1";
 
