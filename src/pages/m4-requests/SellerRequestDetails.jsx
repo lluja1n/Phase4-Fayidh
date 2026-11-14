@@ -1,13 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
-import { EmptyState, BackLink, Badge, InfoList } from '../../components/ui.jsx';
+import { EmptyState, BackLink, Badge, InfoList ,ConfirmModal, Alert} from '../../components/ui.jsx';
 import { formatDate, formatPrice } from '../../data/mockHelpers.js';
-
+import { useState } from 'react';
 
 
 export default function SellerRequestDetails() {
  const { id } = useParams();
-  const { currentUser, requests, getListing,getUser} = useApp();
+  const { currentUser, requests, getListing,getUser,acceptRequest,toast} = useApp();
+  const [showAcceptModal, setShowAcceptModal] = useState(false);
     const request = requests.find((item) => item.id === id);
     // to find the listing associated with the request 
       const listing = request
@@ -44,6 +45,20 @@ export default function SellerRequestDetails() {
       ? 'Educational Institution'
       : 'Business';
 
+      const handleAccept = () => {
+          setShowAcceptModal(false);
+           if (request.status !== 'pending') {
+    toast('This request is no longer pending.', 'error');
+    return;
+  }
+ const result = acceptRequest(request.id);
+  if (result.ok) {
+    toast('Request accepted successfully.');
+  } else {
+    toast(result.error, 'error');
+  }
+};
+
   return (
     <div className="container page">
       <h1>
@@ -51,10 +66,29 @@ export default function SellerRequestDetails() {
           ? 'Purchase Request'
           : 'Donation Request'}
       </h1>
+      {request.status === 'pending' && (
+  <button
+    type="button"
+    className="btn btn-primary"
+    disabled={request.quantity > listing.quantity}
+    onClick={() => setShowAcceptModal(true)}
+
+  >
+    Accept Request
+  </button>
+)}
       <BackLink to="/seller/requests">
   Back to Buyer Requests
 </BackLink>
 <Badge status={request.status} />
+
+{request.status === 'pending' &&
+  request.quantity > listing.quantity && (
+    <Alert kind="warning">
+      Only {listing.quantity} units are available.
+      This request cannot be accepted with the current stock.
+    </Alert>
+  )}
 <div className="grid grid-2" style={{ marginTop: 20 }}>
 
   <div className="card">
@@ -108,6 +142,16 @@ export default function SellerRequestDetails() {
   </div>
 )}
 
+{ /* I added this to show the confirmation modal when the user clicks "Accept Request" */}
+{showAcceptModal && ( 
+  <ConfirmModal
+    title="Accept this request?"
+    message={`Are you sure you want to accept the request for ${request.quantity} unit(s) of ${listing.name}?`}
+    confirmLabel="Accept Request"
+    onConfirm={handleAccept}
+    onCancel={() => setShowAcceptModal(false)}
+  />
+)}
     </div>
   );
 }
