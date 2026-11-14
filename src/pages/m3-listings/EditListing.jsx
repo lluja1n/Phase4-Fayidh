@@ -27,7 +27,7 @@ export default function EditListing() {
 
         updateListing(id, data);
         toast("Listing updated successfully.");
-        navigate("/my-listings");
+        navigate("/seller/listings");
     }
 
     if (!listing) {
@@ -48,7 +48,7 @@ export default function EditListing() {
             <ListingForm
                 initialData={listing}
                 onSubmit={handleEdit}
-                onCancel={() => navigate("/my-listings")}
+                onCancel={() => navigate("/seller/listings")}
                 submitLabel="Save Changes"
             />
 
