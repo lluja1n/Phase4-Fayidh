@@ -182,14 +182,32 @@
     margin-bottom: 20px;
 }
 
-/* Responsive sellerr listings tabel */
-page .table-wrap {
+
+/* My Listings Table */
+.seller-my-listings .table-wrap {
     width: 100%;
     overflow-x: auto;
 }
 
-.page .table-wrap .table {
+.seller-my-listings .table {
     width: 100%;
     min-width: 720px;
     border-collapse: collapse;
+}
+
+/* Center My Listings content */
+.container.page.seller-my-listings {
+    max-width: 1050px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+@media (max-width: 640px) {
+    .container.page.seller-my-listings {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }
