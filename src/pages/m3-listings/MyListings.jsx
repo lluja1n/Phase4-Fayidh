@@ -78,7 +78,7 @@ export default function MyListings() {
                     <p>Items your organization is selling or donating.</p>
                 </div>
 
-                <Link to="/listings/new" className="btn btn-primary">
+                <Link to="/seller/listings/new" className="btn btn-primary">
                     + Create Listing
                 </Link>
             </div>
@@ -92,7 +92,7 @@ export default function MyListings() {
                         Start by adding your first surplus material.
                     </p>
 
-                    <Link to="/listings/new" className="btn btn-primary">
+                    <Link to="/seller/listings/new" className="btn btn-primary">
                         + Create Your First Listing
                     </Link>
                 </div>
@@ -148,7 +148,7 @@ export default function MyListings() {
 
                                             {listing.status !== "removed" ? (
                                                 <Link
-                                                    to={`/listings/${listing.id}/edit`}
+                                                    to={`/seller/listings/${listing.id}/edit`}
                                                     className="btn"
                                                 >
                                                     Edit
