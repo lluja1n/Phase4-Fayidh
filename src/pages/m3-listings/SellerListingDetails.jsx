@@ -34,9 +34,11 @@ export default function SellerListingDetails() {
 
     return (
         <section className="page">
-            <Link to="/my-listings" className="back-link">
+
+            <Link to="/seller/listings" className="back-link">
                 ← Back to My Listings
             </Link>
+
             <h1>{listing.name}</h1>
 
             <div className="card">

@@ -20,7 +20,7 @@ export default function CreateListing() {
         });
 
         toast("Listing created successfully.");
-        navigate("/my-listings");
+        navigate("/seller/listings");
     }
 
     if (!currentUser) {
@@ -60,7 +60,7 @@ export default function CreateListing() {
 
             <ListingForm
                 onSubmit={handleCreate}
-                onCancel={() => navigate("/my-listings")}
+                onCancel={() => navigate("/seller/listings")}
                 submitLabel="Publish Listing"
             />
 
