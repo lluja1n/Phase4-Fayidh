@@ -1,14 +1,16 @@
 import { Link, useParams } from 'react-router-dom';
 import { useApp } from '../../context/AppContext.jsx';
-import { EmptyState, BackLink, Badge, InfoList ,ConfirmModal, Alert} from '../../components/ui.jsx';
+import { EmptyState, BackLink, Badge, InfoList ,ConfirmModal, Alert, TextAreaField} from '../../components/ui.jsx';
 import { formatDate, formatPrice } from '../../data/mockHelpers.js';
 import { useState } from 'react';
 
 
 export default function SellerRequestDetails() {
  const { id } = useParams();
-  const { currentUser, requests, getListing,getUser,acceptRequest,toast} = useApp();
+  const { currentUser, requests, getListing,getUser,acceptRequest,rejectRequest ,toast} = useApp();
   const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
     const request = requests.find((item) => item.id === id);
     // to find the listing associated with the request 
       const listing = request
@@ -58,6 +60,24 @@ export default function SellerRequestDetails() {
     toast(result.error, 'error');
   }
 };
+const handleReject = () => {
+  if (request.status !== 'pending') {
+    toast('This request is no longer pending.', 'error');
+    setShowRejectModal(false);
+    return;
+  }
+
+  const result = rejectRequest(request.id, rejectReason);
+
+  if (result.ok) {
+    toast('Request rejected successfully.');
+  } else {
+    toast(result.error, 'error');
+  }
+
+  setShowRejectModal(false);
+};
+
 
   return (
     <div className="container page">
@@ -77,6 +97,17 @@ export default function SellerRequestDetails() {
     Accept Request
   </button>
 )}
+
+{request.status === 'pending' && (
+  <button
+    type="button"
+    className="btn btn-outline-danger"
+    onClick={() => setShowRejectModal(true)}
+  >
+    Reject Request
+  </button>
+)}
+
       <BackLink to="/seller/requests">
   Back to Buyer Requests
 </BackLink>
@@ -152,6 +183,25 @@ export default function SellerRequestDetails() {
     onCancel={() => setShowAcceptModal(false)}
   />
 )}
+{showRejectModal && (
+  <ConfirmModal
+    title="Reject this request?"
+    message="Are you sure you want to reject this request?"
+    confirmLabel="Reject Request"
+    danger
+    onConfirm={handleReject}
+    onCancel={() => setShowRejectModal(false)}
+  >
+    <TextAreaField
+      label="Reason (optional)"
+      value={rejectReason}
+      onChange={(event) => setRejectReason(event.target.value)}
+      placeholder="Explain why the request was rejected..."
+      maxLength={300}
+    />
+  </ConfirmModal>
+)}
+
     </div>
   );
 }
