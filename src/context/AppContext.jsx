@@ -22,10 +22,33 @@ const initialState = () => ({
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return { ...initialState(), ...JSON.parse(saved) };
+
+    if (saved) {
+      const savedState = JSON.parse(saved);
+
+      // Update images for existing mock listings
+      const updatedListings = (savedState.listings ?? mockListings).map(
+        (listing) => {
+          const updatedMock = mockListings.find(
+            (item) => item.id === listing.id
+          );
+
+          return updatedMock
+            ? { ...listing, images: updatedMock.images }
+            : listing;
+        }
+      );
+
+      return {
+        ...initialState(),
+        ...savedState,
+        listings: updatedListings,
+      };
+    }
   } catch {
-    
+    // Use initial data if saved data cannot be loaded
   }
+
   return initialState();
 }
 
