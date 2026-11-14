@@ -59,7 +59,8 @@ export default function Home() {
             </div>
             <div className="card step-card">
               <h3>Find and request</h3>
-              <p className="muted">Browse available materials and submit purchase requests. Verified university students can also request donations.</p>
+              <p className="muted">Browse available materials and submit purchase requests. Educational institutions and verified
+                university students can also request donations.</p>
             </div>
             <div className="card step-card">
               <h3>Accept and hand over</h3>
@@ -96,7 +97,7 @@ export default function Home() {
             <div className="card feature-card">
               <div className="feature-icon">E</div>
               <h3>Educational institutions</h3>
-              <p className="muted">Buy affordable materials and offer surplus equipment for sale or donation to support education and sustainability.</p>
+              <p className="muted">Buy affordable materials, request donations, and offer surplus equipment for sale or donation to support education and sustainability.</p>
             </div>
             <div className="card feature-card">
               <div className="feature-icon">S</div>
